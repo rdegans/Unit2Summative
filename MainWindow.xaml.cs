@@ -23,12 +23,16 @@ namespace _184863Unit2Summative
         public MainWindow()
         {
             InitializeComponent();
-            ReadFromFile();
             /*System.IO.StreamReader sr = new System.IO.StreamReader("contact.txt");
             System.IO.StreamWriter sw = new System.IO.StreamWriter("contact.txt");
             sw.Flush();
             string[] contactArray = sr.ReadLine().Split(',');
             Contacts contact = new Contacts(contactArray[0], contactArray[1], Convert.ToInt32(contactArray[2]), contactArray[3], Convert.ToInt32(contactArray[4]), contactArray[5]);*/
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            contact.SaveToFile();
         }
     }
     public class Contacts
@@ -36,6 +40,15 @@ namespace _184863Unit2Summative
         public string firstName, lastName, emailAdress, monthBorn;
         public int yearBorn, dayBorn;
         public DateTime birthDay = new DateTime();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fN"></param>
+        /// <param name="lN"></param>
+        /// <param name="yB"></param>
+        /// <param name="mB"></param>
+        /// <param name="dB"></param>
+        /// <param name="eA"></param>
         public Contacts(string fN, string lN, int yB, string mB, int dB, string eA)
         {
             firstName = fN;
@@ -45,32 +58,40 @@ namespace _184863Unit2Summative
             dayBorn = dB;
             emailAdress = eA;
         }
-        public string ReadFromFile ()
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ReadFromFile()
         {
             System.IO.StreamReader sr = new System.IO.StreamReader("contact.txt");
             string[] savedContact = sr.ReadLine().Split(',');
-            Contacts contact = new Contacts(contactArray[0], contactArray[1], Convert.ToInt32(contactArray[2]), contactArray[3], Convert.ToInt32(contactArray[4]), contactArray[5]);
-            txtFirstName.Text = contactArray[0];
-            txtLastName.Text = contactArray[1];
-            txtYearBorn.Text = contactArray[2];
-            txtMonthBorn.Text = contactArray[3];
-            txtDayBorn.Text = contactArray[4];
-            txtEmailAdress.Text = contactArray[5];
+            sr.Close();
+            public Contacts contact = new Contacts(savedContact[0], savedContact[1], Convert.ToInt32(savedContact[2]), savedContact[3], Convert.ToInt32(savedContact[4]), savedContact[5]);
+            txtFirstName.Text = savedContact[0];
+            txtLastName.Text = savedContact[1];
+            txtYearBorn.Text = savedContact[2];
+            txtMonthBorn.Text = savedContact[3];
+            txtDayBorn.Text = savedContact[4];
+            txtEmailAdress.Text = savedContact[5];
         }
+        /// <summary>
+        /// 
+        /// </summary>
         public void SaveToFile()
         {
             System.IO.StreamWriter sw = new System.IO.StreamWriter("contact.txt");
-            sw.Write(txtFirstName.Text + "," + txtLastName.Text + "," + txtYearBorn.Text + "," + txtMonthBorn.Text + "," + txtDayBorn.Text + "," + txtEmailAdress.Text);
+            sw.WriteLine(txtFirstName.Text + "," + txtLastName.Text + "," + txtYearBorn.Text + "," + txtMonthBorn.Text + "," + txtDayBorn.Text + "," + txtEmailAdress.Text);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public string getAge()
         {
             return "Hi";
             //account for month name or month #
             //year born will always be int
             //day born will always be int
-            DateTime DH = new DateTime();
-            DH.Subtract();
         }
     }
-
 }
