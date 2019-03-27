@@ -23,11 +23,12 @@ namespace _184863Unit2Summative
         public MainWindow()
         {
             InitializeComponent();
-            System.IO.StreamReader sr = new System.IO.StreamReader("contact.txt");
+            ReadFromFile();
+            /*System.IO.StreamReader sr = new System.IO.StreamReader("contact.txt");
             System.IO.StreamWriter sw = new System.IO.StreamWriter("contact.txt");
             sw.Flush();
             string[] contactArray = sr.ReadLine().Split(',');
-            Contacts contact = new Contacts(contactArray[0], contactArray[1], Convert.ToInt32(contactArray[2]), contactArray[3], Convert.ToInt32(contactArray[4]), contactArray[5]);
+            Contacts contact = new Contacts(contactArray[0], contactArray[1], Convert.ToInt32(contactArray[2]), contactArray[3], Convert.ToInt32(contactArray[4]), contactArray[5]);*/
         }
     }
     public class Contacts
@@ -46,15 +47,29 @@ namespace _184863Unit2Summative
         }
         public string ReadFromFile ()
         {
-            return "Hi";
+            System.IO.StreamReader sr = new System.IO.StreamReader("contact.txt");
+            string[] savedContact = sr.ReadLine().Split(',');
+            Contacts contact = new Contacts(contactArray[0], contactArray[1], Convert.ToInt32(contactArray[2]), contactArray[3], Convert.ToInt32(contactArray[4]), contactArray[5]);
+            txtFirstName.Text = contactArray[0];
+            txtLastName.Text = contactArray[1];
+            txtYearBorn.Text = contactArray[2];
+            txtMonthBorn.Text = contactArray[3];
+            txtDayBorn.Text = contactArray[4];
+            txtEmailAdress.Text = contactArray[5];
         }
         public void SaveToFile()
         {
-
+            System.IO.StreamWriter sw = new System.IO.StreamWriter("contact.txt");
+            sw.Write(txtFirstName.Text + "," + txtLastName.Text + "," + txtYearBorn.Text + "," + txtMonthBorn.Text + "," + txtDayBorn.Text + "," + txtEmailAdress.Text);
         }
         public string getAge()
         {
             return "Hi";
+            //account for month name or month #
+            //year born will always be int
+            //day born will always be int
+            DateTime DH = new DateTime();
+            DH.Subtract();
         }
     }
 
