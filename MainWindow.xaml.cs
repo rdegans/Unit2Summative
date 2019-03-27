@@ -23,22 +23,26 @@ namespace _184863Unit2Summative
         public MainWindow()
         {
             InitializeComponent();
-            /*System.IO.StreamReader sr = new System.IO.StreamReader("contact.txt");
-            System.IO.StreamWriter sw = new System.IO.StreamWriter("contact.txt");
-            sw.Flush();
-            string[] contactArray = sr.ReadLine().Split(',');
-            Contacts contact = new Contacts(contactArray[0], contactArray[1], Convert.ToInt32(contactArray[2]), contactArray[3], Convert.ToInt32(contactArray[4]), contactArray[5]);*/
+            Contacts contactTemp = new Contacts("placeholder", "placeholder", 1, 1, 1, "place holder");
+            string[] contactNew = contactTemp.ReadFromFile();
+            txtFirstName.Text = contactNew[0];
+            txtLastName.Text = contactNew[1];
+            txtYearBorn.Text = contactNew[2];
+            txtMonthBorn.Text = contactNew[3];
+            txtDayBorn.Text = contactNew[4];
+            txtEmailAdress.Text = contactNew[5];
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            contact.SaveToFile();
+            Contacts contactFinal = new Contacts(txtFirstName.Text, txtLastName.Text, Convert.ToInt32(txtYearBorn.Text), Convert.ToInt32(txtMonthBorn.Text), Convert.ToInt32(txtDayBorn), txtEmailAdress.Text);
+            contactFinal.SaveToFile();
         }
     }
     public class Contacts
     {
-        public string firstName, lastName, emailAdress, monthBorn;
-        public int yearBorn, dayBorn;
+        public string firstName, lastName, emailAdress;
+        public int yearBorn, monthBorn, dayBorn;
         public DateTime birthDay = new DateTime();
         /// <summary>
         /// 
@@ -49,7 +53,7 @@ namespace _184863Unit2Summative
         /// <param name="mB"></param>
         /// <param name="dB"></param>
         /// <param name="eA"></param>
-        public Contacts(string fN, string lN, int yB, string mB, int dB, string eA)
+        public Contacts(string fN, string lN, int yB, int mB, int dB, string eA)
         {
             firstName = fN;
             lastName = lN;
@@ -61,18 +65,12 @@ namespace _184863Unit2Summative
         /// <summary>
         /// 
         /// </summary>
-        public void ReadFromFile()
+        public string[] ReadFromFile()
         {
             System.IO.StreamReader sr = new System.IO.StreamReader("contact.txt");
             string[] savedContact = sr.ReadLine().Split(',');
             sr.Close();
-            public Contacts contact = new Contacts(savedContact[0], savedContact[1], Convert.ToInt32(savedContact[2]), savedContact[3], Convert.ToInt32(savedContact[4]), savedContact[5]);
-            txtFirstName.Text = savedContact[0];
-            txtLastName.Text = savedContact[1];
-            txtYearBorn.Text = savedContact[2];
-            txtMonthBorn.Text = savedContact[3];
-            txtDayBorn.Text = savedContact[4];
-            txtEmailAdress.Text = savedContact[5];
+            return savedContact;
         }
         /// <summary>
         /// 
@@ -80,14 +78,17 @@ namespace _184863Unit2Summative
         public void SaveToFile()
         {
             System.IO.StreamWriter sw = new System.IO.StreamWriter("contact.txt");
-            sw.WriteLine(txtFirstName.Text + "," + txtLastName.Text + "," + txtYearBorn.Text + "," + txtMonthBorn.Text + "," + txtDayBorn.Text + "," + txtEmailAdress.Text);
+            //sw.WriteLine(firstName + "," + lastName + "," + yearBorn + "," + monthBorn + "," + dayBorn + "," + emailAdress);
+            sw.WriteLine("itworked");
+            sw.Flush();
+            sw.Close();
         }
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         public string getAge()
-        {
+        { 
             return "Hi";
             //account for month name or month #
             //year born will always be int
