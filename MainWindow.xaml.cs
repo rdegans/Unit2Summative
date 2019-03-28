@@ -32,18 +32,50 @@ namespace _184863Unit2Summative
             txtDayBorn.Text = contactNew[4];
             txtEmailAdress.Text = contactNew[5];
         }
-
         private void Window_Closed(object sender, EventArgs e)
         {
-            Contacts contactFinal = new Contacts(txtFirstName.Text, txtLastName.Text, Convert.ToInt32(txtYearBorn.Text), Convert.ToInt32(txtMonthBorn.Text), Convert.ToInt32(txtDayBorn), txtEmailAdress.Text);
-            contactFinal.SaveToFile();
+
+        }
+
+        private void BtnGetAge_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                int birthYear, birthMonth, birthDay;
+                int.TryParse(txtDayBorn.Text, out birthDay);
+                int.TryParse(txtMonthBorn.Text, out birthMonth);
+                int.TryParse(txtYearBorn.Text, out birthYear);
+                Contacts contactCurrent = new Contacts(txtFirstName.Text, txtLastName.Text, birthYear, birthMonth, birthDay, txtEmailAdress.Text);
+                MessageBox.Show("Your age is " + contactCurrent.getAge() + " years old");
+            }
+            catch
+            {
+                MessageBox.Show("Please enter data for all fields and only enter number values for year born, month born and day born");
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                int birthYear, birthMonth, birthDay;
+                int.TryParse(txtDayBorn.Text, out birthDay);
+                int.TryParse(txtMonthBorn.Text, out birthMonth);
+                int.TryParse(txtYearBorn.Text, out birthYear);
+                DateTime placeHolder = new DateTime(birthYear, birthMonth, birthDay);
+                Contacts contactFinal = new Contacts(txtFirstName.Text, txtLastName.Text, birthYear, birthMonth, birthDay, txtEmailAdress.Text);
+                contactFinal.SaveToFile();
+            }
+            catch
+            {
+                MessageBox.Show("Please enter data for all fields and only enter number values for year born, month born and day born");
+            }
         }
     }
     public class Contacts
     {
         public string firstName, lastName, emailAdress;
         public int yearBorn, monthBorn, dayBorn;
-        public DateTime birthDay = new DateTime();
         /// <summary>
         /// 
         /// </summary>
@@ -78,8 +110,21 @@ namespace _184863Unit2Summative
         public void SaveToFile()
         {
             System.IO.StreamWriter sw = new System.IO.StreamWriter("contact.txt");
-            //sw.WriteLine(firstName + "," + lastName + "," + yearBorn + "," + monthBorn + "," + dayBorn + "," + emailAdress);
-            sw.WriteLine("itworked");
+            string[] userInput = new string[3];
+            userInput[0] = firstName;
+            userInput[1] = lastName;
+            userInput[2] = emailAdress;
+            string tempName;
+            for (int i = 0; i<userInput.Length; i++)
+            {
+                tempName = "";
+                for (int x = 0; x < userInput[i].Split(',').Length; i++)
+                {
+                    tempName += userInput[i].Split(',')[x];
+                }
+                userInput[i] = tempName;
+            }
+            sw.WriteLine(userInput[0] + "," + userInput[1] + "," + userInput[2] + "," + monthBorn + "," + dayBorn + "," + emailAdress);
             sw.Flush();
             sw.Close();
         }
@@ -87,12 +132,12 @@ namespace _184863Unit2Summative
         /// 
         /// </summary>
         /// <returns></returns>
-        public string getAge()
-        { 
-            return "Hi";
-            //account for month name or month #
-            //year born will always be int
-            //day born will always be int
+        public double getAge()
+        {
+
+            DateTime birthDay = new DateTime(yearBorn, monthBorn, dayBorn);
+            DateTime currentDay = DateTime.Today;
+            return Math.Floor(currentDay.Subtract(birthDay).Days / 365.25);
         }
     }
 }

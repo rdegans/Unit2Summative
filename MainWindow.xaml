@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_184863Unit2Summative"
         mc:Ignorable="d"
-        Title="Contacts - Unit 2 Summative" Height="350" Width="525">
+        Title="Contacts - Unit 2 Summative" Height="350" Width="525" Closing="Window_Closing">
     <Canvas>
+        <Button x:Name="btnGetAge" Content="Click me to get your age" Click="BtnGetAge_Click" Canvas.Left="10" Canvas.Top="216"/>
         <TextBox x:Name="txtFirstName" Text="Enter your data" Canvas.Left="115" Canvas.Top="31"/>
         <TextBox x:Name="txtLastName" Text="Enter your data" Canvas.Left="115" Canvas.Top="61"/>
         <TextBox x:Name="txtYearBorn" Text="Enter your data" Canvas.Left="115" Canvas.Top="91"/>
