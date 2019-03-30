@@ -25,14 +25,27 @@ namespace _184863Unit2Summative
         public MainWindow()
         {
             InitializeComponent();
-            Contacts contactTemp = new Contacts("placeholder", "placeholder", 1, 1, 1, "place holder");
-            string[] contactNew = contactTemp.ReadFromFile();
-            txtFirstName.Text = contactNew[0];
-            txtLastName.Text = contactNew[1];
-            txtYearBorn.Text = contactNew[2];
-            txtMonthBorn.Text = contactNew[3];
-            txtDayBorn.Text = contactNew[4];
-            txtEmailAdress.Text = contactNew[5];
+            string[] contactNew = new string[6];
+           try
+            {
+                Contacts contactTemp = new Contacts("placeholder", "placeholder", 1, 1, 1, "place holder");
+                contactNew = contactTemp.ReadFromFile();
+                txtFirstName.Text = contactNew[0];
+                txtLastName.Text = contactNew[1];
+                txtYearBorn.Text = contactNew[2];
+                txtMonthBorn.Text = contactNew[3];
+                txtDayBorn.Text = contactNew[4];
+                txtEmailAdress.Text = contactNew[5];
+            }
+            catch
+            {
+                txtFirstName.Text = "Enter your data here";
+                txtLastName.Text = "Enter your data here";
+                txtYearBorn.Text = "Enter your data here";
+                txtMonthBorn.Text = "Enter your data here";
+                txtDayBorn.Text = "Enter your data here";
+                txtEmailAdress.Text = "Enter your data here";
+            }
         }
         private void BtnGetAge_Click(object sender, RoutedEventArgs e)
         {
@@ -47,7 +60,7 @@ namespace _184863Unit2Summative
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Please enter data for all fields and only enter number values for year born, month born and day born" + Environment.NewLine + ex);
+                MessageBox.Show("Please enter valid data for all fields and only enter number values for year born, month born and day born");
             }
         }
 
@@ -61,11 +74,35 @@ namespace _184863Unit2Summative
                 int.TryParse(txtYearBorn.Text, out birthYear);
                 DateTime placeHolder = new DateTime(birthYear, birthMonth, birthDay);
                 Contacts contactFinal = new Contacts(txtFirstName.Text, txtLastName.Text, birthYear, birthMonth, birthDay, txtEmailAdress.Text);
-                contactFinal.SaveToFile();
+                string[] userInput = new string[6];
+                userInput[0] = birthYear.ToString();
+                userInput[1] = birthMonth.ToString();
+                userInput[2] = birthDay.ToString();
+                userInput[3] = txtFirstName.Text;
+                userInput[4] = txtLastName.Text;
+                userInput[5] = txtEmailAdress.Text;
+                for (int i = 0; i<userInput.Length; i++)
+                {
+                    if (userInput[i].Length == 0)
+                    {
+                        e.Cancel = true;
+                        MessageBox.Show("Please fill in all fields");
+                    }
+                    if (userInput[i].Contains(','))
+                    {
+                        e.Cancel = true;
+                        MessageBox.Show("Please do not enter commas");
+                    }
+                    else
+                    {
+                        contactFinal.SaveToFile();
+                    }
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Please enter valid data for all fields and only enter number values for year born, month born and day born" + Environment.NewLine + ex);
+                MessageBox.Show("Please enter valid data for all fields and only enter number values for year born, month born and day born");
+                e.Cancel = true;
             }
         }
     }

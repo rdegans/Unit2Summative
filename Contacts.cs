@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using System.ComponentModel;
 
 namespace _184863Unit2Summative
 {
@@ -43,11 +44,23 @@ namespace _184863Unit2Summative
         /// </summary>
         public string[] ReadFromFile()
         {
-            System.IO.StreamReader sr = new System.IO.StreamReader("contact.txt");
-            string[] savedContact = new string[6];
+            string[] savedContact = new string [6];
             try
             {
-                savedContact = sr.ReadLine().Split(',');
+                System.IO.StreamReader sr = new System.IO.StreamReader("contact.txt");
+                savedContact = new string[6];
+                try
+                {
+                    savedContact = sr.ReadLine().Split(',');
+                }
+                catch
+                {
+                    for (int i = 0; i < savedContact.Length; i++)
+                    {
+                        savedContact[i] = "Enter your data here";
+                    }
+                }
+                sr.Close();
             }
             catch (FileNotFoundException ex)
             {
@@ -56,14 +69,6 @@ namespace _184863Unit2Summative
                     savedContact[i] = "Enter your data here";
                 }
             }
-            catch
-            {
-                for (int i = 0; i < savedContact.Length; i++)
-                {
-                    savedContact[i] = "Enter your data here";
-                }
-            }
-            sr.Close();
             return savedContact;
         }
         /// <summary>
@@ -74,27 +79,13 @@ namespace _184863Unit2Summative
             try
             {
                 System.IO.StreamWriter sw = new System.IO.StreamWriter("contact.txt");
-                string[] userInput = new string[3];
-                userInput[0] = firstName;
-                userInput[1] = lastName;
-                userInput[2] = emailAdress;
-                string tempName;
-                /*for (int i = 0; i < userInput.Length; i++)
-                {
-                    tempName = "";
-                    for (int x = 0; x < userInput[i].Split(',').Length; i++)
-                    {
-                        tempName += userInput[i].Split(',')[x];
-                    }
-                    userInput[i] = tempName;
-                }*///cut commas
-                sw.WriteLine(userInput[0] + "," + userInput[1] + "," + userInput[2] + "," + monthBorn + "," + dayBorn + "," + emailAdress);
+                sw.WriteLine(firstName + "," + lastName + "," + yearBorn + "," + monthBorn + "," + dayBorn + "," + emailAdress);
                 sw.Flush();
                 sw.Close();
             }
-            catch(FileNotFoundException e)
+            catch (FileNotFoundException /*e*/)
             {
-                MessageBox.Show(e.ToString());
+               // MessageBox.Show(e.ToString());
             }
         }
         /// <summary>
@@ -110,4 +101,3 @@ namespace _184863Unit2Summative
         }
     }
 }
-
