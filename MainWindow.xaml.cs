@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using System.IO;
 
 namespace _184863Unit2Summative
 {
@@ -32,11 +34,6 @@ namespace _184863Unit2Summative
             txtDayBorn.Text = contactNew[4];
             txtEmailAdress.Text = contactNew[5];
         }
-        private void Window_Closed(object sender, EventArgs e)
-        {
-
-        }
-
         private void BtnGetAge_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -48,9 +45,9 @@ namespace _184863Unit2Summative
                 Contacts contactCurrent = new Contacts(txtFirstName.Text, txtLastName.Text, birthYear, birthMonth, birthDay, txtEmailAdress.Text);
                 MessageBox.Show("Your age is " + contactCurrent.getAge() + " years old");
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Please enter data for all fields and only enter number values for year born, month born and day born");
+                MessageBox.Show("Please enter data for all fields and only enter number values for year born, month born and day born" + Environment.NewLine + ex);
             }
         }
 
@@ -66,78 +63,10 @@ namespace _184863Unit2Summative
                 Contacts contactFinal = new Contacts(txtFirstName.Text, txtLastName.Text, birthYear, birthMonth, birthDay, txtEmailAdress.Text);
                 contactFinal.SaveToFile();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Please enter data for all fields and only enter number values for year born, month born and day born");
+                MessageBox.Show("Please enter valid data for all fields and only enter number values for year born, month born and day born" + Environment.NewLine + ex);
             }
-        }
-    }
-    public class Contacts
-    {
-        public string firstName, lastName, emailAdress;
-        public int yearBorn, monthBorn, dayBorn;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="fN"></param>
-        /// <param name="lN"></param>
-        /// <param name="yB"></param>
-        /// <param name="mB"></param>
-        /// <param name="dB"></param>
-        /// <param name="eA"></param>
-        public Contacts(string fN, string lN, int yB, int mB, int dB, string eA)
-        {
-            firstName = fN;
-            lastName = lN;
-            yearBorn = yB;
-            monthBorn = mB;
-            dayBorn = dB;
-            emailAdress = eA;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string[] ReadFromFile()
-        {
-            System.IO.StreamReader sr = new System.IO.StreamReader("contact.txt");
-            string[] savedContact = sr.ReadLine().Split(',');
-            sr.Close();
-            return savedContact;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public void SaveToFile()
-        {
-            System.IO.StreamWriter sw = new System.IO.StreamWriter("contact.txt");
-            string[] userInput = new string[3];
-            userInput[0] = firstName;
-            userInput[1] = lastName;
-            userInput[2] = emailAdress;
-            string tempName;
-            for (int i = 0; i<userInput.Length; i++)
-            {
-                tempName = "";
-                for (int x = 0; x < userInput[i].Split(',').Length; i++)
-                {
-                    tempName += userInput[i].Split(',')[x];
-                }
-                userInput[i] = tempName;
-            }
-            sw.WriteLine(userInput[0] + "," + userInput[1] + "," + userInput[2] + "," + monthBorn + "," + dayBorn + "," + emailAdress);
-            sw.Flush();
-            sw.Close();
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public double getAge()
-        {
-
-            DateTime birthDay = new DateTime(yearBorn, monthBorn, dayBorn);
-            DateTime currentDay = DateTime.Today;
-            return Math.Floor(currentDay.Subtract(birthDay).Days / 365.25);
         }
     }
 }
